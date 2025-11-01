@@ -1,0 +1,34 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+venv/
+.env
+*.env
+
+# Django database
+db.sqlite3
+
+# Django static and media
+staticfiles/
+media/
+
+# Logs
+*.log
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+
+# OS-specific
+.DS_Store
+Thumbs.db
