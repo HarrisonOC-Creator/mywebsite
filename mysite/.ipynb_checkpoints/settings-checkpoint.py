@@ -1,5 +1,5 @@
 """
-Django settings for mysite project (Render‑ready).
+Django settings for mysite project (Render + local dev).
 """
 
 from pathlib import Path
@@ -8,20 +8,26 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# -----------------------------------------------------------------------------
+# Security
+# -----------------------------------------------------------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "insecure-development-key")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+# Default to DEBUG=True locally, False on Render
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-# Allow your Render domain + localhost for dev
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    os.environ.get("RENDER_EXTERNAL_HOSTNAME", ""),  # Render injects this
 ]
+# Render injects its hostname into env
+render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if render_host:
+    ALLOWED_HOSTS.append(render_host)
 
-# Application definition
+# -----------------------------------------------------------------------------
+# Applications
+# -----------------------------------------------------------------------------
 INSTALLED_APPS = [
     "projects.apps.ProjectsConfig",
     "django.contrib.admin",
@@ -34,7 +40,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # serve static files
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # serve static files in prod
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -64,16 +70,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "mysite.wsgi.application"
 
+# -----------------------------------------------------------------------------
 # Database
-DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        ssl_require=True,
-    )
-}
+# -----------------------------------------------------------------------------
+if os.environ.get("DATABASE_URL"):
+    # Render Postgres
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+else:
+    # Local SQLite
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
+# -----------------------------------------------------------------------------
 # Password validation
+# -----------------------------------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
@@ -81,24 +100,35 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# -----------------------------------------------------------------------------
 # Internationalization
+# -----------------------------------------------------------------------------
 LANGUAGE_CODE = "en-gb"
 TIME_ZONE = "Australia/Melbourne"
 USE_I18N = True
 USE_TZ = True
 
+# -----------------------------------------------------------------------------
 # Static files
+# -----------------------------------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "projects" / "static"]
 
-# WhiteNoise compression/manifest
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+if DEBUG:
+    # Simple storage in dev (no hashed filenames)
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+else:
+    # WhiteNoise compressed storage in prod
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+# -----------------------------------------------------------------------------
 # Media files
+# -----------------------------------------------------------------------------
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# -----------------------------------------------------------------------------
 # Default primary key field type
+# -----------------------------------------------------------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-

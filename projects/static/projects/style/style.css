@@ -130,8 +130,8 @@
   color: var(--ocean-accent);
   text-shadow: 0 0 6px rgba(0, 188, 212, 0.6);
   margin-bottom: 1rem;
-  opacity: 1;              /* visible by default */
-  transform: none;         /* no offset by default */
+  opacity: 1;
+  transform: none;
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 .hero-tagline.animate {
@@ -151,7 +151,7 @@
   font-size: 1.05rem;
   line-height: 1.6;
   font-weight: 300;
-  opacity: 1;              /* visible by default */
+  opacity: 1;
   transform: none;
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
@@ -159,7 +159,7 @@
   opacity: 1;
   transform: translateY(0);
   animation: fadeUp 0.8s ease;
-  animation-delay: 0.3s;   /* staggered reveal */
+  animation-delay: 0.3s;
 }
 
 /* Keyframes for fade/slide */
@@ -173,7 +173,6 @@
     transform: translateY(0);
   }
 }
-
 
 /* Ensure collapse text is visible */
 .card .collapse {
@@ -241,7 +240,7 @@
 
 /* Contact Section */
 .contact-photo {
-  width: 320px;   /* slightly larger than about-photo */
+  width: 320px;
   height: 320px;
   object-fit: cover;
   object-position: 50% 20%;
@@ -259,7 +258,7 @@
 }
 
 #contact .contact-label {
-  color: var(--futuristic-accent); /* yellow titles */
+  color: var(--futuristic-accent);
   font-weight: 600;
   font-family: 'Orbitron', sans-serif;
   margin-right: 0.5rem;
@@ -281,12 +280,13 @@
 
 /* Contact footer note */
 #contact .footer-note {
-  color: var(--ocean-accent); /* your blue accent */
+  color: var(--ocean-accent);
   font-weight: 600;
   font-family: 'Rajdhani', sans-serif;
   text-align: left;
   margin-top: 1rem;
 }
+
 
 /* Section Styling */
 section {

@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import Project
 
+
 def project_list(request):
     all_projects = Project.objects.all()
     featured_project = all_projects.filter(title__icontains="GitHub").first()
@@ -16,12 +17,15 @@ def project_list(request):
         },
     )
 
+
 def project_detail(request, slug):
     project = get_object_or_404(Project, slug=slug)
     return render(request, "projects/project_detail.html", {"project": project})
 
+
 def contact(request):
     return render(request, "projects/contact.html")
+
 
 # AJAX endpoint for demos
 def demo_api(request):
@@ -42,30 +46,30 @@ def demo_api(request):
                 "Healthcare Nurse Resume": [
                     "WTC Case Management Nurse",
                     "Supervising Public Health Nurse, Bureau of School Health/SH Nursing Services & Prof Dev",
-                    "Public Health Nurse, I, Bureau of School Health",
+                    "Public Health Nurse I, Bureau of School Health",
                     "Supervising Health Nurse, Bureau of School Health/SH Nursing Services & Prof Dev",
-                    "Staff Nurse (Part-Time)", 
+                    "Staff Nurse (Part-Time)",
                 ],
                 "Software Engineer Resume": [
                     "Software Engineer",
                     "Senior Data Engineer",
                     "DevOps Engineer",
                     "Certified IT Developer (Applications)",
-                    "Web Application Developer", 
+                    "Web Application Developer",
                 ],
                 "Financial Analyst Resume": [
-                    "Senior/Supervising Analyst  Environmental Sustainability and Resiliency",
-                    "Investment Officer- Fixed Income",
-                    "Risk Officer (Asset Management)", 
-                    "Energy Program Analyst", 
-                    "Staff Analyst", 
+                    "Senior/Supervising Analyst – Environmental Sustainability and Resiliency",
+                    "Investment Officer – Fixed Income",
+                    "Risk Officer (Asset Management)",
+                    "Energy Program Analyst",
+                    "Staff Analyst",
                 ],
                 "Graphic Designer Resume": [
                     "Graphic Design College Intern",
                     "Project Manager",
                     "Architectural Designer",
                     "Multimedia Designer/Systems Analyst",
-                    "UX Designer", 
+                    "UX Designer",
                 ],
             }
             jobs = sample_matches.get(resume_choice, [])
@@ -75,12 +79,12 @@ def demo_api(request):
             player_choice = request.POST.get("player")
             sample_archetypes = {
                 "LeBron James": "All-NBA Level Star",
-                "Klay Thompson": "3 & D Wing/ Floor Spacer",
-                "Steven Adams": "Rim Protector/ Putback Big",
-                "Devin Booker": "Primary Creator/ Star Guard",
+                "Klay Thompson": "3 & D Wing / Floor Spacer",
+                "Steven Adams": "Rim Protector / Putback Big",
+                "Devin Booker": "Primary Creator / Star Guard",
                 "Jordan Clarkson": "Low-Usage Role Guard",
-                "Anthony Davis": "Rim-Running Big/ Defensive Anchor",
-                "Jalen Johnson": "Versatile Forward/ Secondary Scorer",
+                "Anthony Davis": "Rim-Running Big / Defensive Anchor",
+                "Jalen Johnson": "Versatile Forward / Secondary Scorer",
             }
             archetype = sample_archetypes.get(player_choice, "Unknown")
             response_html = f"<h6>Archetype:</h6><p>{archetype}</p>"

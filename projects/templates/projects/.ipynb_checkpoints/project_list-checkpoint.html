@@ -11,7 +11,7 @@
 
   <!-- Profile Image -->
   <div class="text-center mb-3">
-    <img src="{% static 'projects/images/me.jpeg' %}" 
+    <img src="{% static 'projects/me/me.jpeg' %}" 
          alt="Photo of Harrison Ogden-Carr" 
          class="img-fluid rounded-circle shadow-sm about-photo">
   </div>
@@ -29,13 +29,12 @@
       showcase the progress that I make along the way.
     </p>
   </div>
-    <div class="text-center mt-3">
-      <a href="{% static 'documents/Harrison_Ogden_Carr_CV.pdf' %}" 
-         class="btn btn-futuristic" target="_blank">
-        <i class="bi bi-file-earmark-person"></i> View CV
-      </a>
-    </div>
-
+  <div class="text-center mt-3">
+    <a href="{% static 'documents/Harrison_Ogden_Carr_CV.pdf' %}" 
+       class="btn btn-futuristic" target="_blank">
+      <i class="bi bi-file-earmark-person"></i> View CV
+    </a>
+  </div>
 </section>
 
 <!-- Script to trigger About animation -->
@@ -65,7 +64,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 </script>
-
 <!-- Main Projects -->
 <section id="projects" class="container mt-5">
   <h2 class="text-center mb-4">My Projects</h2>
@@ -180,8 +178,6 @@ document.addEventListener("DOMContentLoaded", function() {
     {% endfor %}
   </div> <!-- end row -->
 </section>
-
-
 <!-- Featured GitHub Project -->
 {% if featured %}
 <section class="container mt-5">
@@ -239,7 +235,6 @@ document.addEventListener("DOMContentLoaded", function() {
 {% endif %}
 {% endif %}
 
-
 <!-- AJAX Script -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -289,4 +284,4 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 
-{% endblock %}            
+{% endblock %}
