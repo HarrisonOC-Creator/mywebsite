@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Projects | My Portfolio{% endblock %}
+
+{% block content %}
+<!-- Roadmap - show maths, physics, AWS certification, GitHub, Website building-->
+<!-- About Section -->
+<section id="about" class="container mt-5">
+  <h2 class="text-center mb-4">About Me</h2>
+
+  <!-- Profile Image -->
+  <div class="text-center mb-3">
+    <img src="{% static 'projects/images/me.jpeg' %}" 
+         alt="Photo of Harrison Ogden-Carr" 
+         class="img-fluid rounded-circle shadow-sm about-photo">
+  </div>
+
+  <!-- Tagline -->
+  <h5 class="card-title hero-tagline text-center mb-3">
+    Physics trained. AWS Certified. Always learning.
+  </h5>
+
+  <!-- Constrained About Text -->
+  <div class="about-text mx-auto text-center">
+    <p class="hero-subtext">
+      I’m an aspiring ML engineer, building skills by tackling projects that span different algorithms 
+      and real‑world challenges. This website is part of that journey — a place to share my work and 
+      showcase the progress that I make along the way.
+    </p>
+  </div>
+</section>
+
+<!-- Script to trigger About animation -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const aboutBtn = document.getElementById("about-btn");
+  const tagline = document.querySelector(".hero-tagline");
+  const subtext = document.querySelector(".hero-subtext");
+  const aboutSection = document.getElementById("about");
+
+  if (aboutBtn) {
+    aboutBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      aboutSection.scrollIntoView({ behavior: "smooth" });
+
+      // reset animation
+      tagline.classList.remove("animate");
+      subtext.classList.remove("animate");
+
+      // force reflow so browser registers the removal
+      void tagline.offsetWidth;
+
+      // re-add to trigger animation
+      tagline.classList.add("animate");
+      subtext.classList.add("animate");
+    });
+  }
+});
+</script>
+
+<!-- Main Projects -->
+<section id="projects" class="container mt-5">
+  <h2 class="text-center mb-4">My Projects</h2>
+  <div class="row">
+    {% for project in projects %}
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <!-- Icon + Title Row -->
+            <div class="d-flex align-items-center mb-2">
+              {% if project.icon %}
+                <img src="{{ project.icon.url }}" class="project-icon me-2" alt="{{ project.title }} icon">
+              {% endif %}
+              <h5 class="card-title mb-0">{{ project.title }}</h5>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between mb-2">
+              {% if project.github_link %}
+                <a href="{{ project.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
+              {% endif %}
+              <button class="btn btn-sm btn-futuristic" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#project-{{ project.id }}">
+                Details
+              </button>
+            </div>
+
+            <!-- Collapsible Details -->
+            <div class="collapse mt-2" id="project-{{ project.id }}">
+              <p class="small">{{ project.description }}</p>
+
+              {% if project.tech_stack %}
+                <p class="small mt-2"><strong>Tech stack:</strong> {{ project.tech_stack }}</p>
+              {% endif %}
+
+              {% if project.image %}
+                <!-- Thumbnail trigger -->
+                <img src="{{ project.image.url }}"
+                     class="project-screenshot img-thumbnail"
+                     alt="Screenshot of {{ project.title }}"
+                     data-bs-toggle="modal"
+                     data-bs-target="#screenshotModal-{{ project.id }}">
+              {% endif %}
+
+              <!-- Inline Demo Forms -->
+              {% if project.demo_type == "resume" %}
+                <form method="post" class="demo-form mt-3" data-demo="resume" data-project="{{ project.id }}">
+                  {% csrf_token %}
+                  <label for="resume-{{ project.id }}">Choose a sample resume:</label>
+                  <select name="resume" id="resume-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
+                    <option>Data Analyst Resume</option>
+                    <option>Healthcare Nurse Resume</option>
+                    <option>Software Engineer Resume</option>
+                    <option>Financial Analyst Resume</option>
+                    <option>Graphic Designer Resume</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-futuristic mt-2">Find Matches</button>
+                </form>
+                <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+
+              {% elif project.demo_type == "player_peak" %}
+                <form method="post" class="demo-form mt-3"
+                      data-demo="player_peak" data-project="{{ project.id }}">
+                  {% csrf_token %}
+                  <label for="player-{{ project.id }}">Choose a player:</label>
+                  <select name="player" id="player-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
+                    <option value="Dyson Daniels">Dyson Daniels</option>
+                    <option value="Jalen Williams">Jalen Williams</option>
+                    <option value="Walker Kessler">Walker Kessler</option>
+                    <option value="Paolo Banchero">Paolo Banchero</option>
+                    <option value="Shaedon Sharpe">Shaedon Sharpe</option>
+                    <option value="Jalen Duran">Jalen Duran</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-futuristic mt-2">Show Peak Stats</button>
+                </form>
+                <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+
+              {% elif project.demo_type == "basketball_archetype" %}
+                <form method="post" class="demo-form mt-3" data-demo="basketball_archetype" data-project="{{ project.id }}">
+                  {% csrf_token %}
+                  <label for="player-{{ project.id }}">Choose a player:</label>
+                  <select name="player" id="player-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
+                      <option>LeBron James</option>
+                      <option>Klay Thompson</option>
+                      <option>Steven Adams</option>
+                      <option>Devin Booker</option>
+                      <option>Jordan Clarkson</option>
+                      <option>Anthony Davis</option>
+                      <option>Jalen Johnson</option>
+                  </select>
+                  <button type="submit" class="btn btn-sm btn-futuristic mt-2">Identify Archetype</button>
+                </form>
+                <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+              {% endif %}
+            </div> <!-- end collapse -->
+          </div> <!-- end card-body -->
+        </div> <!-- end card -->
+      </div> <!-- end col -->
+
+      <!-- Screenshot Modal -->
+      {% if project.image %}
+      <div class="modal fade" id="screenshotModal-{{ project.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content bg-dark">
+            <div class="modal-body text-center">
+              <img src="{{ project.image.url }}" class="img-fluid" alt="Screenshot of {{ project.title }}">
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div> <!-- end row -->
+</section>
+
+
+<!-- Featured GitHub Project -->
+{% if featured %}
+<section class="container mt-5">
+  <h2 class="text-center mb-4">My GitHub</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-2">
+            {% if featured.icon %}
+              <img src="{{ featured.icon.url }}" class="project-icon me-2" alt="{{ featured.title }} icon">
+            {% endif %}
+            <h5 class="card-title mb-0">{{ featured.title }}</h5>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            {% if featured.github_link %}
+              <a href="{{ featured.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
+            {% endif %}
+            <button class="btn btn-sm btn-futuristic" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#project-{{ featured.id }}">
+              Details
+            </button>
+          </div>
+          <div class="collapse mt-2" id="project-{{ featured.id }}">
+            <p class="small">{{ featured.description }}</p>
+            {% if featured.tech_stack %}
+              <p class="small mt-2"><strong>Tech stack:</strong> {{ featured.tech_stack }}</p>
+            {% endif %}
+            {% if featured.image %}
+              <!-- Thumbnail trigger -->
+              <img src="{{ featured.image.url }}"
+                   class="project-screenshot img-thumbnail"
+                   alt="Screenshot of {{ featured.title }}"
+                   data-bs-toggle="modal"
+                   data-bs-target="#screenshotModal-featured">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured GitHub Modal -->
+{% if featured.image %}
+<div class="modal fade" id="screenshotModal-featured" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark">
+      <div class="modal-body text-center">
+        <img src="{{ featured.image.url }}" class="img-fluid" alt="Screenshot of {{ featured.title }}">
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+
+
+<!-- AJAX Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Handle demo form submissions
+  document.querySelectorAll(".demo-form").forEach(form => {
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      formData.append("demo_type", form.dataset.demo);
+      formData.append("project_id", form.dataset.project);
+
+      fetch("{% url 'demo_api' %}", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        const resultsDiv = document.getElementById("results-" + form.dataset.project);
+        if (data.html) {
+          resultsDiv.innerHTML = data.html;
+        } else {
+          resultsDiv.innerHTML = "<p class='text-danger'>Error loading demo.</p>";
+        }
+      });
+    });
+  });
+
+  // About button animation trigger
+  const aboutBtn = document.getElementById("about-btn");
+  const tagline = document.querySelector(".hero-tagline");
+  const subtext = document.querySelector(".hero-subtext");
+  const aboutSection = document.getElementById("about");
+
+  if (aboutBtn) {
+    aboutBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      aboutSection.scrollIntoView({ behavior: "smooth" });
+      tagline.classList.add("animate");
+      subtext.classList.add("animate");
+    });
+  }
+});
+</script>
+
+{% endblock %}            

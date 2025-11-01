@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact | My Portfolio{% endblock %}
+
+{% block content %}
+<div id="contact" class="container mt-5">
+  <h2 class="text-center mb-4">Contact Me</h2>
+
+  <div class="row justify-content-center align-items-center">
+    <!-- Photo -->
+    <div class="col-md-4 text-center mb-3">
+      <img src="{% static 'projects/images/contact_me.jpeg' %}" 
+           alt="Photo of Harrison Ogden-Carr" 
+           class="img-fluid rounded-circle shadow-sm contact-photo">
+    </div>
+
+    <!-- Contact Info -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-4">
+        <p><span class="contact-label">Email:</span> 
+          <a href="mailto:harrisonoc44@gmail.com" class="contact-link">harrisonoc44@gmail.com</a>
+        </p>
+        <p><span class="contact-label">LinkedIn:</span> 
+          <a href="https://www.linkedin.com/in/harrison-ogden-carr/" target="_blank">linkedin.com/in/harrison-ogden-carr/</a>
+        </p>
+        <p><span class="contact-label">GitHub:</span> 
+          <a href="https://github.com/HarrisonOC-Creator" target="_blank">github.com/HarrisonOC-Creator</a>
+        </p>
+        <p class="footer-note">Looking forward to connecting and exploring opportunities together.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

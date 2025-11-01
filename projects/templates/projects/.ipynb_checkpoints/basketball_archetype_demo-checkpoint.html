@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Basketball Archetype Demo{% endblock %}
+
+{% block content %}
+<section class="container mt-5">
+  <h2 class="text-center mb-4">NBA Player Archetype Demo</h2>
+  <form method="post" class="text-center">
+    {% csrf_token %}
+    <label for="player">Choose a player:</label>
+    <select name="player" id="player" class="form-select w-auto d-inline-block mx-2">
+      <option>LeBron James</option>
+      <option>Stephen Curry</option>
+      <option>Giannis Antetokounmpo</option>
+    </select>
+    <button type="submit" class="btn btn-futuristic">Identify Archetype</button>
+  </form>
+
+  {% if archetype %}
+    <div class="mt-4">
+      <h5>Archetype:</h5>
+      <p>{{ archetype }}</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

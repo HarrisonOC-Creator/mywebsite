@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Resume Matcher Demo{% endblock %}
+
+{% block content %}
+<section class="container mt-5">
+  <h2 class="text-center mb-4">Resume → Job Match Demo</h2>
+  <form method="post" class="text-center">
+    {% csrf_token %}
+    <label for="resume">Choose a sample resume:</label>
+    <select name="resume" id="resume" class="form-select w-auto d-inline-block mx-2">
+      <option>Data Scientist Resume</option>
+      <option>Software Engineer Resume</option>
+    </select>
+    <button type="submit" class="btn btn-futuristic">Find Matches</button>
+  </form>
+
+  {% if results %}
+    <div class="mt-4">
+      <h5>Top Matches:</h5>
+      <ul>
+        {% for job in results %}
+          <li>{{ job }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

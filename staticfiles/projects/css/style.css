@@ -1,0 +1,153 @@
+/* Theme Variables */
+:root {
+  --futuristic-bg: #0d0d0d;
+  --futuristic-accent: #ffe066; /* yellow */
+  --futuristic-text: #e0e0e0;
+  --ocean-accent: #00bcd4; /* blue */
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--futuristic-bg);
+}
+.navbar-brand {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  color: var(--futuristic-accent) !important;
+}
+.nav-link {
+  color: var(--ocean-accent) !important;
+  transition: color 0.2s ease-in-out;
+}
+.nav-link:hover {
+  color: var(--futuristic-accent) !important;
+}
+
+/* Hero */
+.hero-banner {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.3));
+  z-index: 1;
+}
+.hero-banner > * {
+  position: relative;
+  z-index: 2;
+}
+.hero-heading {
+  font-size: 3.5rem;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--futuristic-accent);
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+.hero-subheading {
+  font-size: 1.8rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  color: var(--futuristic-accent);
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  margin-top: 0.5rem;
+}
+
+/* Project Icons */
+.project-icon {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+/* Project Screenshots (inside Details expansion) */
+.project-screenshot {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #333;
+  background-color: #0d0d0d;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Project Cards */
+.card {
+  background-color: #1a1a1d;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(255, 224, 102, 0.3);
+}
+
+/* Buttons */
+.btn-futuristic {
+  background-color: var(--futuristic-accent); /* yellow */
+  color: var(--futuristic-bg); /* black text */
+  border: none;
+  font-weight: bold;
+  transition: box-shadow 0.2s ease-in-out;
+}
+.btn-futuristic:hover {
+  box-shadow: 0 0 10px var(--futuristic-accent);
+  color: var(--futuristic-bg);
+}
+
+.btn-primary {
+  background-color: var(--ocean-accent);
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #0097a7;
+}
+
+.btn-secondary {
+  background-color: #555;
+  border: none;
+}
+.btn-secondary:hover {
+  background-color: #777;
+}
+
+/* Footer */
+.custom-footer {
+  background-color: var(--futuristic-bg);
+  padding: 20px 0;
+}
+.custom-footer .footer-brand {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  color: var(--futuristic-accent);
+}
+.custom-footer .footer-links {
+  color: var(--ocean-accent);
+}
+.custom-footer .footer-links a {
+  color: var(--ocean-accent);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+.custom-footer .footer-links a:hover {
+  color: var(--futuristic-accent);
+}
+
+/* Section Styling */
+section {
+  background-color: var(--futuristic-bg);
+  color: var(--futuristic-text);
+  padding: 3rem 0;
+}
+section h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--futuristic-accent);
+  margin-bottom: 2rem;
+}

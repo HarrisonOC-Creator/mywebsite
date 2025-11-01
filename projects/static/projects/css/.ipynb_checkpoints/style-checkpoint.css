@@ -1,0 +1,301 @@
+/* Theme Variables */
+:root {
+  --futuristic-bg: #0d0d0d;
+  --futuristic-accent: #ffe066; /* yellow */
+  --futuristic-text: #e0e0e0;
+  --ocean-accent: #00bcd4; /* blue */
+}
+
+/* Navbar */
+.navbar {
+  background-color: var(--futuristic-bg);
+}
+.navbar-brand {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  color: var(--futuristic-accent) !important;
+}
+.nav-link {
+  color: var(--ocean-accent) !important;
+  transition: color 0.2s ease-in-out;
+}
+.nav-link:hover {
+  color: var(--futuristic-accent) !important;
+}
+
+/* Hero Banner */
+.hero-banner {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.3));
+  z-index: 1;
+}
+.hero-banner > * {
+  position: relative;
+  z-index: 2;
+}
+.hero-heading {
+  font-size: 3.5rem;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--futuristic-accent);
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+.hero-subheading {
+  font-size: 1.8rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  color: var(--futuristic-accent);
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+  margin-top: 0.5rem;
+}
+
+/* Project Icons */
+.project-icon {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  display: inline-block;
+  margin: 0;
+  background-color: #1a1a1d;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+/* Project Screenshots */
+.project-screenshot {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #333;
+  background-color: #0d0d0d;
+  padding: 0.5rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.project-screenshot:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+/* Project Cards */
+.card {
+  background-color: #1a1a1d;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(255, 224, 102, 0.3);
+}
+.card-title {
+  color: var(--ocean-accent);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  text-shadow: 0 0 6px rgba(0, 188, 212, 0.6);
+}
+.card-title:hover {
+  color: var(--futuristic-accent);
+  text-shadow: 0 0 8px var(--futuristic-accent);
+}
+
+/* About Section */
+.about-photo {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+  object-position: 50% 20%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.about-photo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 230, 230, 0.6);
+}
+
+/* Tagline styled like project titles */
+.hero-tagline {
+  font-size: 1.25rem;
+  font-weight: 500;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--ocean-accent);
+  text-shadow: 0 0 6px rgba(0, 188, 212, 0.6);
+  margin-bottom: 1rem;
+  opacity: 1;              /* visible by default */
+  transform: none;         /* no offset by default */
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.hero-tagline.animate {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeUp 0.8s ease;
+}
+
+/* Body text */
+.about-text {
+  max-width: 500px;
+  margin: 0 auto;
+}
+.hero-subtext {
+  color: var(--futuristic-text);
+  text-shadow: 0 0 6px rgba(0, 188, 212, 0.4);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-weight: 300;
+  opacity: 1;              /* visible by default */
+  transform: none;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.hero-subtext.animate {
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeUp 0.8s ease;
+  animation-delay: 0.3s;   /* staggered reveal */
+}
+
+/* Keyframes for fade/slide */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Ensure collapse text is visible */
+.card .collapse {
+  color: var(--futuristic-text);
+}
+.card .collapse p,
+.card .collapse strong {
+  color: var(--futuristic-text);
+}
+.card .collapse strong {
+  color: var(--futuristic-accent);
+}
+.card .collapse p {
+  margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+.btn-futuristic {
+  background-color: var(--futuristic-accent);
+  color: var(--futuristic-bg);
+  border: none;
+  font-weight: bold;
+  transition: box-shadow 0.2s ease-in-out;
+}
+.btn-futuristic:hover {
+  box-shadow: 0 0 10px var(--futuristic-accent);
+  color: var(--futuristic-bg);
+}
+.btn-primary {
+  background-color: var(--ocean-accent);
+  border: none;
+}
+.btn-primary:hover {
+  background-color: #0097a7;
+}
+.btn-secondary {
+  background-color: #555;
+  border: none;
+}
+.btn-secondary:hover {
+  background-color: #777;
+}
+
+/* Footer */
+.custom-footer {
+  background-color: var(--futuristic-bg);
+  padding: 20px 0;
+}
+.custom-footer .footer-brand {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: bold;
+  color: var(--futuristic-accent);
+}
+.custom-footer .footer-links {
+  color: var(--ocean-accent);
+}
+.custom-footer .footer-links a {
+  color: var(--ocean-accent);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+.custom-footer .footer-links a:hover {
+  color: var(--futuristic-accent);
+}
+
+/* Contact Section */
+.contact-photo {
+  width: 320px;   /* slightly larger than about-photo */
+  height: 320px;
+  object-fit: cover;
+  object-position: 50% 20%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.contact-photo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 230, 230, 0.6);
+}
+
+#contact .card {
+  background-color: #1a1a1d;
+  border: none;
+  color: var(--futuristic-text);
+}
+
+#contact .contact-label {
+  color: var(--futuristic-accent); /* yellow titles */
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  margin-right: 0.5rem;
+}
+
+#contact .contact-link {
+  color: var(--ocean-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+#contact .contact-link:hover {
+  color: var(--futuristic-accent);
+  text-shadow: 0 0 6px var(--futuristic-accent);
+}
+#contact h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--futuristic-accent);
+}
+
+/* Contact footer note */
+#contact .footer-note {
+  color: var(--ocean-accent); /* your blue accent */
+  font-weight: 600;
+  font-family: 'Rajdhani', sans-serif;
+  text-align: left;
+  margin-top: 1rem;
+}
+
+/* Section Styling */
+section {
+  background-color: var(--futuristic-bg);
+  color: var(--futuristic-text);
+  padding: 3rem 0;
+}
+section h2 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--futuristic-accent);
+  margin-bottom: 2rem;
+}

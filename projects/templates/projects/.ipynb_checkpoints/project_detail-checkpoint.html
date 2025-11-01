@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }}{% endblock %}
+
+{% block content %}
+<section class="container mt-5">
+  <h1>{{ project.title }}</h1>
+
+  <p class="lead">{{ project.description }}</p>
+
+  {% if project.tech_stack %}
+    <p><strong>Tech stack:</strong> {{ project.tech_stack }}</p>
+  {% endif %}
+
+  {% if project.results %}
+    <p><strong>Results:</strong> {{ project.results }}</p>
+  {% endif %}
+
+  {% if project.screenshot %}
+    <img src="{{ project.screenshot.url }}" class="project-screenshot" alt="Screenshot of {{ project.title }}">
+  {% endif %}
+
+  <div class="mt-3">
+    {% if project.github_link %}
+      <a href="{{ project.github_link }}" class="btn btn-dark me-2" target="_blank">View on GitHub</a>
+    {% endif %}
+    {% if project.demo_link %}
+      <a href="{{ project.demo_link }}" class="btn btn-primary me-2" target="_blank">Live Demo</a>
+    {% endif %}
+    <a href="{% url 'project_list' %}" class="btn btn-secondary">← Back to Projects</a>
+  </div>
+</section>
+{% endblock %}
