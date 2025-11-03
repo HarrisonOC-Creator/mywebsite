@@ -113,7 +113,12 @@ USE_TZ = True
 # -----------------------------------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "projects" / "static"]
+
+# Include both the top-level static/ folder and any app-level static/ folders
+STATICFILES_DIRS = [
+    BASE_DIR / "static",                # e.g. static/projects/screenshots/
+    BASE_DIR / "projects" / "static",   # keep app-specific static if you have them
+]
 
 if DEBUG:
     # Simple storage in dev (no hashed filenames)
@@ -123,7 +128,7 @@ else:
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # -----------------------------------------------------------------------------
-# Media files
+# Media files (still available if you need uploads, but not for fixed screenshots)
 # -----------------------------------------------------------------------------
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

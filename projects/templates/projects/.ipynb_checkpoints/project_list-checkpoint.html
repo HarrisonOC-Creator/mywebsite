@@ -47,7 +47,7 @@
   </div>
 </section>
 
-<!-- Roadmap Modal (fullscreen, no backdrop, click image or outside to close) -->
+<!-- Roadmap Modal -->
 <div class="modal fade" id="roadmapModal" tabindex="-1" aria-hidden="true"
      data-bs-backdrop="false" data-bs-keyboard="true">
   <div class="modal-dialog modal-fullscreen">
@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function() {
   const img = roadmapModalEl.querySelector('img');
 
   roadmapModalEl.addEventListener('click', function(e) {
-    // Close if clicking anywhere in modal body that is not the image
     if (!img.contains(e.target)) {
       bootstrap.Modal.getInstance(roadmapModalEl).hide();
     }
@@ -206,9 +205,11 @@ document.addEventListener("DOMContentLoaded", function() {
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <div class="d-flex align-items-center mb-2">
-            {% if featured.icon %}
-              <img src="{{ featured.icon.url }}" class="project-icon me-2" alt="{{ featured.title }} icon">
-            {% endif %}
+            <!-- Optional static icon -->
+            <img src="{% static 'projects/screenshots/github_icon.jpg' %}"
+                 class="project-icon me-2"
+                 alt="{{ featured.title }} icon">
+
             <h5 class="card-title mb-0"
                 role="button"
                 data-bs-toggle="collapse"
@@ -236,14 +237,13 @@ document.addEventListener("DOMContentLoaded", function() {
             {% if featured.tech_stack %}
               <p class="small mt-2"><strong>Tech stack:</strong> {{ featured.tech_stack }}</p>
             {% endif %}
-            {% if featured.image %}
-              <!-- Thumbnail trigger -->
-              <img src="{{ featured.image.url }}"
-                   class="project-screenshot img-thumbnail hover-zoom"
-                   alt="Screenshot of {{ featured.title }}"
-                   data-bs-toggle="modal"
-                   data-bs-target="#screenshotModal-featured">
-            {% endif %}
+
+            <!-- Thumbnail trigger (static screenshot) -->
+            <img src="{% static 'projects/screenshots/github_about_me.png' %}"
+                 class="project-screenshot img-thumbnail hover-zoom"
+                 alt="Screenshot of {{ featured.title }}"
+                 data-bs-toggle="modal"
+                 data-bs-target="#screenshotModal-featured">
           </div>
         </div>
       </div>
@@ -252,19 +252,17 @@ document.addEventListener("DOMContentLoaded", function() {
 </section>
 
 <!-- Featured GitHub Modal -->
-{% if featured.image %}
 <div class="modal fade" id="screenshotModal-featured" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content bg-dark">
       <div class="modal-body d-flex justify-content-center align-items-center p-0">
-        <img src="{{ featured.image.url }}" 
+        <img src="{% static 'projects/screenshots/github_about_me.png' %}"
              class="img-fluid"
              alt="Screenshot of {{ featured.title }}">
       </div>
     </div>
   </div>
 </div>
-{% endif %}
 {% endif %}
 
 <!-- Scripts -->
