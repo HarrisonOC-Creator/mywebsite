@@ -8,7 +8,7 @@
 <section id="about" class="container mt-5">
   <div class="row align-items-start">
     <!-- Left Column: About Me -->
-    <div class="col-md-6 text-center">
+    <div class="col-md-6 text-center mb-4 mb-md-0">
       <h2 class="mb-4">About Me</h2>
 
       <img src="{% static 'projects/me/me.jpeg' %}" 
@@ -36,7 +36,7 @@
     </div>
 
     <!-- Right Column: ML Roadmap -->
-    <div class="col-md-6 text-center">
+    <div class="col-md-6 text-center mt-4 mt-md-0">
       <h2 class="mb-4">My ML Roadmap</h2>
       <img src="{% static 'projects/roadmap/roadmap.jpg' %}" 
            alt="Roadmap of Harrison's learning journey" 
@@ -46,6 +46,7 @@
     </div> <!-- ✅ closed right column -->
   </div>
 </section>
+
 
 <!-- Roadmap Modal -->
 <div class="modal fade" id="roadmapModal" tabindex="-1" aria-hidden="true"
@@ -117,14 +118,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 <p class="small mt-2"><strong>Tech stack:</strong> {{ project.tech_stack }}</p>
               {% endif %}
 
-              {% if project.image %}
-                <!-- Thumbnail trigger -->
-                <img src="{{ project.image.url }}"
-                     class="project-screenshot img-thumbnail hover-zoom"
-                     alt="Screenshot of {{ project.title }}"
-                     data-bs-toggle="modal"
-                     data-bs-target="#screenshotModal-{{ project.id }}">
-              {% endif %}
+              <!-- Thumbnail trigger (static screenshot based on slug) -->
+              <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
+                   class="project-screenshot img-thumbnail hover-zoom"
+                   alt="Screenshot of {{ project.title }}"
+                   data-bs-toggle="modal"
+                   data-bs-target="#screenshotModal-{{ project.id }}">
 
               <!-- Inline Demo Forms -->
               {% if project.demo_type == "resume" %}
@@ -182,20 +181,21 @@ document.addEventListener("DOMContentLoaded", function() {
       </div>
 
       <!-- Screenshot Modal -->
-      {% if project.image %}
       <div class="modal fade" id="screenshotModal-{{ project.id }}" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
           <div class="modal-content bg-dark">
             <div class="modal-body d-flex justify-content-center align-items-center p-0">
-              <img src="{{ project.image.url }}" class="img-fluid" alt="Screenshot of {{ project.title }}">
+              <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
+                   class="img-fluid"
+                   alt="Screenshot of {{ project.title }}">
             </div>
           </div>
         </div>
       </div>
-      {% endif %}
     {% endfor %}
   </div>
 </section>
+
 <!-- Featured GitHub Project -->
 {% if featured %}
 <section class="container mt-5">
