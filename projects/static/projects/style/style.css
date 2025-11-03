@@ -122,6 +122,24 @@
   box-shadow: 0 0 15px rgba(0, 230, 230, 0.6);
 }
 
+.roadmap-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.about-photo {
+  max-width: 180px;
+}
+
+.hover-zoom {
+  transition: transform 0.3s ease;
+}
+.hover-zoom:hover {
+  transform: scale(1.05);
+}
+
 /* Tagline styled like project titles */
 .hero-tagline {
   font-size: 1.25rem;

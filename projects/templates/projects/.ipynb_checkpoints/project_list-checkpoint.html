@@ -4,64 +4,76 @@
 {% block title %}Projects | My Portfolio{% endblock %}
 
 {% block content %}
-<!-- Roadmap - show maths, physics, AWS certification, GitHub, Website building-->
 <!-- About Section -->
 <section id="about" class="container mt-5">
-  <h2 class="text-center mb-4">About Me</h2>
+  <div class="row align-items-start">
+    <!-- Left Column: About Me -->
+    <div class="col-md-6 text-center">
+      <h2 class="mb-4">About Me</h2>
 
-  <!-- Profile Image -->
-  <div class="text-center mb-3">
-    <img src="{% static 'projects/me/me.jpeg' %}" 
-         alt="Photo of Harrison Ogden-Carr" 
-         class="img-fluid rounded-circle shadow-sm about-photo">
-  </div>
+      <img src="{% static 'projects/me/me.jpeg' %}" 
+           alt="Photo of Harrison Ogden-Carr" 
+           class="img-fluid rounded-circle shadow-sm about-photo mb-3">
 
-  <!-- Tagline -->
-  <h5 class="card-title hero-tagline text-center mb-3">
-    Physics trained. AWS Certified. Always learning.
-  </h5>
+      <h5 class="card-title hero-tagline mb-3">
+        Physics trained. AWS Certified. Always learning.
+      </h5>
 
-  <!-- Constrained About Text -->
-  <div class="about-text mx-auto text-center">
-    <p class="hero-subtext">
-      I’m an aspiring ML engineer, building skills by tackling projects that span different algorithms 
-      and real‑world challenges. This website is part of that journey — a place to share my work and 
-      showcase the progress that I make along the way.
-    </p>
-  </div>
-  <div class="text-center mt-3">
-    <a href="{% static 'documents/Harrison_Ogden_Carr_CV.pdf' %}" 
-       class="btn btn-futuristic" target="_blank">
-      <i class="bi bi-file-earmark-person"></i> View CV
-    </a>
+      <div class="about-text px-3">
+        <p class="hero-subtext">
+          I’m an aspiring ML engineer, building skills by tackling projects that span different algorithms 
+          and real‑world challenges. This website is part of that journey — a place to share my work and 
+          showcase the progress that I make along the way.
+        </p>
+      </div>
+
+      <div class="mt-3">
+        <a href="{% static 'documents/Harrison_Ogden_Carr_CV.pdf' %}" 
+           class="btn btn-futuristic" target="_blank">
+          <i class="bi bi-file-earmark-person"></i> View CV
+        </a>
+      </div>
+    </div>
+
+    <!-- Right Column: ML Roadmap -->
+    <div class="col-md-6 text-center">
+      <h2 class="mb-4">My ML Roadmap</h2>
+      <img src="{% static 'projects/roadmap/roadmap.jpg' %}" 
+           alt="Roadmap of Harrison's learning journey" 
+           class="img-fluid rounded shadow-sm roadmap-img hover-zoom"
+           data-bs-toggle="modal" data-bs-target="#roadmapModal"
+           style="cursor: zoom-in;">
+    </div> <!-- ✅ closed right column -->
   </div>
 </section>
 
-<!-- Script to trigger About animation -->
+<!-- Roadmap Modal (fullscreen, no backdrop, click image or outside to close) -->
+<div class="modal fade" id="roadmapModal" tabindex="-1" aria-hidden="true"
+     data-bs-backdrop="false" data-bs-keyboard="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content bg-transparent border-0 shadow-none">
+      <div class="modal-body d-flex justify-content-center align-items-center p-0">
+        <img src="{% static 'projects/roadmap/roadmap.jpg' %}" 
+             alt="Expanded roadmap"
+             class="img-fluid rounded shadow-lg"
+             data-bs-dismiss="modal"
+             style="cursor: zoom-out;">
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  const aboutBtn = document.getElementById("about-btn");
-  const tagline = document.querySelector(".hero-tagline");
-  const subtext = document.querySelector(".hero-subtext");
-  const aboutSection = document.getElementById("about");
+  const roadmapModalEl = document.getElementById('roadmapModal');
+  const img = roadmapModalEl.querySelector('img');
 
-  if (aboutBtn) {
-    aboutBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      aboutSection.scrollIntoView({ behavior: "smooth" });
-
-      // reset animation
-      tagline.classList.remove("animate");
-      subtext.classList.remove("animate");
-
-      // force reflow so browser registers the removal
-      void tagline.offsetWidth;
-
-      // re-add to trigger animation
-      tagline.classList.add("animate");
-      subtext.classList.add("animate");
-    });
-  }
+  roadmapModalEl.addEventListener('click', function(e) {
+    // Close if clicking anywhere in modal body that is not the image
+    if (!img.contains(e.target)) {
+      bootstrap.Modal.getInstance(roadmapModalEl).hide();
+    }
+  });
 });
 </script>
 <!-- Main Projects -->
@@ -77,7 +89,14 @@ document.addEventListener("DOMContentLoaded", function() {
               {% if project.icon %}
                 <img src="{{ project.icon.url }}" class="project-icon me-2" alt="{{ project.title }} icon">
               {% endif %}
-              <h5 class="card-title mb-0">{{ project.title }}</h5>
+              <h5 class="card-title mb-0"
+                  role="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#project-{{ project.id }}"
+                  aria-expanded="false"
+                  aria-controls="project-{{ project.id }}">
+                {{ project.title }}
+              </h5>
             </div>
 
             <!-- Action Buttons -->
@@ -102,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
               {% if project.image %}
                 <!-- Thumbnail trigger -->
                 <img src="{{ project.image.url }}"
-                     class="project-screenshot img-thumbnail"
+                     class="project-screenshot img-thumbnail hover-zoom"
                      alt="Screenshot of {{ project.title }}"
                      data-bs-toggle="modal"
                      data-bs-target="#screenshotModal-{{ project.id }}">
@@ -158,17 +177,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 </form>
                 <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
               {% endif %}
-            </div> <!-- end collapse -->
-          </div> <!-- end card-body -->
-        </div> <!-- end card -->
-      </div> <!-- end col -->
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Screenshot Modal -->
       {% if project.image %}
       <div class="modal fade" id="screenshotModal-{{ project.id }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
           <div class="modal-content bg-dark">
-            <div class="modal-body text-center">
+            <div class="modal-body d-flex justify-content-center align-items-center p-0">
               <img src="{{ project.image.url }}" class="img-fluid" alt="Screenshot of {{ project.title }}">
             </div>
           </div>
@@ -176,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
       </div>
       {% endif %}
     {% endfor %}
-  </div> <!-- end row -->
+  </div>
 </section>
 <!-- Featured GitHub Project -->
 {% if featured %}
@@ -190,8 +209,17 @@ document.addEventListener("DOMContentLoaded", function() {
             {% if featured.icon %}
               <img src="{{ featured.icon.url }}" class="project-icon me-2" alt="{{ featured.title }} icon">
             {% endif %}
-            <h5 class="card-title mb-0">{{ featured.title }}</h5>
+            <h5 class="card-title mb-0"
+                role="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#project-{{ featured.id }}"
+                aria-expanded="false"
+                aria-controls="project-{{ featured.id }}">
+              {{ featured.title }}
+            </h5>
           </div>
+
+          <!-- Action Buttons -->
           <div class="d-flex justify-content-between mb-2">
             {% if featured.github_link %}
               <a href="{{ featured.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
@@ -201,6 +229,8 @@ document.addEventListener("DOMContentLoaded", function() {
               Details
             </button>
           </div>
+
+          <!-- Collapsible Details -->
           <div class="collapse mt-2" id="project-{{ featured.id }}">
             <p class="small">{{ featured.description }}</p>
             {% if featured.tech_stack %}
@@ -209,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function() {
             {% if featured.image %}
               <!-- Thumbnail trigger -->
               <img src="{{ featured.image.url }}"
-                   class="project-screenshot img-thumbnail"
+                   class="project-screenshot img-thumbnail hover-zoom"
                    alt="Screenshot of {{ featured.title }}"
                    data-bs-toggle="modal"
                    data-bs-target="#screenshotModal-featured">
@@ -224,10 +254,12 @@ document.addEventListener("DOMContentLoaded", function() {
 <!-- Featured GitHub Modal -->
 {% if featured.image %}
 <div class="modal fade" id="screenshotModal-featured" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content bg-dark">
-      <div class="modal-body text-center">
-        <img src="{{ featured.image.url }}" class="img-fluid" alt="Screenshot of {{ featured.title }}">
+      <div class="modal-body d-flex justify-content-center align-items-center p-0">
+        <img src="{{ featured.image.url }}" 
+             class="img-fluid"
+             alt="Screenshot of {{ featured.title }}">
       </div>
     </div>
   </div>
@@ -235,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function() {
 {% endif %}
 {% endif %}
 
-<!-- AJAX Script -->
+<!-- Scripts -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   // Handle demo form submissions
@@ -258,11 +290,12 @@ document.addEventListener("DOMContentLoaded", function() {
       .then(res => res.json())
       .then(data => {
         const resultsDiv = document.getElementById("results-" + form.dataset.project);
-        if (data.html) {
-          resultsDiv.innerHTML = data.html;
-        } else {
-          resultsDiv.innerHTML = "<p class='text-danger'>Error loading demo.</p>";
-        }
+        resultsDiv.innerHTML = data.html || "<p class='text-danger'>Error loading demo.</p>";
+      })
+      .catch(err => {
+        console.error("Demo fetch error:", err);
+        const resultsDiv = document.getElementById("results-" + form.dataset.project);
+        resultsDiv.innerHTML = "<p class='text-danger'>An error occurred.</p>";
       });
     });
   });
