@@ -8,3 +8,6 @@ torch
 torchvision
 numpy
 os
+pathlib
+PIL
+json
