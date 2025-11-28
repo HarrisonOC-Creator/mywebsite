@@ -26,7 +26,15 @@
     {% if project.demo_link %}
       <a href="{{ project.demo_link }}" class="btn btn-primary me-2" target="_blank">Live Demo</a>
     {% endif %}
+
+    {# 🔹 Special case: show demo button only for dog breed classifier project #}
+    {% if project.slug == "dog-breed-classifier" %}
+      <a href="{% url 'dog_breed_demo' project.slug %}" class="btn btn-primary me-2">Try the Dog Breed Demo</a>
+    {% endif %}
+
     <a href="{% url 'project_list' %}" class="btn btn-secondary">← Back to Projects</a>
   </div>
 </section>
+<p>DEBUG: slug is "{{ project.slug }}"</p>
 {% endblock %}
+

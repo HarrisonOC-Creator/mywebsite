@@ -76,93 +76,164 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
-<!-- Main Projects -->
-<section id="projects" class="container mt-5">
-  <h2 class="text-center mb-4">My Projects</h2>
-  <div class="row">
+<!-- Interactive Projects -->
+<section id="interactive-projects" class="container mt-5">
+  <h2 class="text-center mb-4 text-interactive">Live Demos</h2>
+  <div class="row justify-content-center">
     {% for project in projects %}
-      <div class="col-md-4 mb-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <!-- Icon + Title Row -->
-            <div class="d-flex align-items-center mb-2">
-              {% if project.icon %}
-                <img src="{{ project.icon.url }}" class="project-icon me-2" alt="{{ project.title }} icon">
-              {% endif %}
-              <h5 class="card-title mb-0"
-                  role="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#project-{{ project.id }}"
-                  aria-expanded="false"
-                  aria-controls="project-{{ project.id }}">
-                {{ project.title }}
-              </h5>
+      {% if project.project_type == "interactive" %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm border-primary">
+            <div class="card-body">
+              <!-- Icon + Title Row -->
+              <div class="d-flex align-items-center mb-2">
+                {% if project.icon %}
+                  <img src="{{ project.icon.url }}" class="project-icon me-2" alt="{{ project.title }} icon">
+                {% endif %}
+                <h5 class="card-title mb-0"
+                    role="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#project-{{ project.id }}"
+                    aria-expanded="false"
+                    aria-controls="project-{{ project.id }}">
+                  {{ project.title }}
+                </h5>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-between mb-2">
+                {% if project.github_link %}
+                  <a href="{{ project.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
+                {% endif %}
+                <a href="{% url 'dog_breed_demo' %}" class="btn btn-sm btn-futuristic">
+                  Find Your Dog Breed Here!
+                </a>
+
+                <button class="btn btn-sm btn-futuristic" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#project-{{ project.id }}">
+                  Details
+                </button>
+              </div>
+
+              <!-- Collapsible Details -->
+              <div class="collapse mt-2" id="project-{{ project.id }}">
+                <p class="small">{{ project.description }}</p>
+                {% if project.tech_stack %}
+                  <p class="small mt-2"><strong>Tech stack:</strong> {{ project.tech_stack }}</p>
+                {% endif %}
+                <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
+                     class="project-screenshot img-thumbnail hover-zoom"
+                     alt="Screenshot of {{ project.title }}"
+                     data-bs-toggle="modal"
+                     data-bs-target="#screenshotModal-{{ project.id }}">
+              </div>
             </div>
+          </div>
+        </div>
 
-            <!-- Action Buttons -->
-            <div class="d-flex justify-content-between mb-2">
-              {% if project.github_link %}
-                <a href="{{ project.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
-              {% endif %}
-              <button class="btn btn-sm btn-futuristic" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#project-{{ project.id }}">
-                Details
-              </button>
+        <!-- Screenshot Modal -->
+        <div class="modal fade" id="screenshotModal-{{ project.id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-dark">
+              <div class="modal-body d-flex justify-content-center align-items-center p-0">
+                <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
+                     class="img-fluid"
+                     alt="Screenshot of {{ project.title }}">
+              </div>
             </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
 
-            <!-- Collapsible Details -->
-            <div class="collapse mt-2" id="project-{{ project.id }}">
-              <p class="small">{{ project.description }}</p>
 
-              {% if project.tech_stack %}
-                <p class="small mt-2"><strong>Tech stack:</strong> {{ project.tech_stack }}</p>
-              {% endif %}
+<!-- Static Projects -->
+<section id="static-projects" class="container mt-5">
+  <h2 class="text-center mb-4 text-static">Project Snapshots</h2>
+  <div class="row justify-content-center">
+    {% for project in projects %}
+      {% if project.project_type == "static" %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <!-- Icon + Title Row -->
+              <div class="d-flex align-items-center mb-2">
+                {% if project.icon %}
+                  <img src="{{ project.icon.url }}" class="project-icon me-2" alt="{{ project.title }} icon">
+                {% endif %}
+                <h5 class="card-title mb-0"
+                    role="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#project-{{ project.id }}"
+                    aria-expanded="false"
+                    aria-controls="project-{{ project.id }}">
+                  {{ project.title }}
+                </h5>
+              </div>
 
-              <!-- Thumbnail trigger (static screenshot based on slug) -->
-              <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
-                   class="project-screenshot img-thumbnail hover-zoom"
-                   alt="Screenshot of {{ project.title }}"
-                   data-bs-toggle="modal"
-                   data-bs-target="#screenshotModal-{{ project.id }}">
+              <!-- Action Buttons -->
+              <div class="d-flex justify-content-between mb-2">
+                {% if project.github_link %}
+                  <a href="{{ project.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
+                {% endif %}
+                <button class="btn btn-sm btn-futuristic" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#project-{{ project.id }}">
+                  Details
+                </button>
+              </div>
 
-              <!-- Inline Demo Forms -->
-              {% if project.demo_type == "resume" %}
-                <form method="post" class="demo-form mt-3" data-demo="resume" data-project="{{ project.id }}">
-                  {% csrf_token %}
-                  <label for="resume-{{ project.id }}">Choose a sample resume:</label>
-                  <select name="resume" id="resume-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
-                    <option>Data Analyst Resume</option>
-                    <option>Healthcare Nurse Resume</option>
-                    <option>Software Engineer Resume</option>
-                    <option>Financial Analyst Resume</option>
-                    <option>Graphic Designer Resume</option>
-                  </select>
-                  <button type="submit" class="btn btn-sm btn-futuristic mt-2">Find Matches</button>
-                </form>
-                <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+              <!-- Collapsible Details -->
+              <div class="collapse mt-2" id="project-{{ project.id }}">
+                <p class="small">{{ project.description }}</p>
+                {% if project.tech_stack %}
+                  <p class="small mt-2"><strong>Tech stack:</strong> {{ project.tech_stack }}</p>
+                {% endif %}
 
-              {% elif project.demo_type == "player_peak" %}
-                <form method="post" class="demo-form mt-3"
-                      data-demo="player_peak" data-project="{{ project.id }}">
-                  {% csrf_token %}
-                  <label for="player-{{ project.id }}">Choose a player:</label>
-                  <select name="player" id="player-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
-                    <option value="Dyson Daniels">Dyson Daniels</option>
-                    <option value="Jalen Williams">Jalen Williams</option>
-                    <option value="Walker Kessler">Walker Kessler</option>
-                    <option value="Paolo Banchero">Paolo Banchero</option>
-                    <option value="Shaedon Sharpe">Shaedon Sharpe</option>
-                    <option value="Jalen Duran">Jalen Duran</option>
-                  </select>
-                  <button type="submit" class="btn btn-sm btn-futuristic mt-2">Show Peak Stats</button>
-                </form>
-                <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+                <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
+                     class="project-screenshot img-thumbnail hover-zoom"
+                     alt="Screenshot of {{ project.title }}"
+                     data-bs-toggle="modal"
+                     data-bs-target="#screenshotModal-{{ project.id }}">
 
-              {% elif project.demo_type == "basketball_archetype" %}
-                <form method="post" class="demo-form mt-3" data-demo="basketball_archetype" data-project="{{ project.id }}">
-                  {% csrf_token %}
-                  <label for="player-{{ project.id }}">Choose a player:</label>
-                  <select name="player" id="player-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
+                {# 🔹 Inline demo forms restored for static projects #}
+                {% if project.demo_type == "resume" %}
+                  <form method="post" class="demo-form mt-3" data-demo="resume" data-project="{{ project.id }}">
+                    {% csrf_token %}
+                    <label for="resume-{{ project.id }}">Choose a sample resume:</label>
+                    <select name="resume" id="resume-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
+                      <option>Data Analyst Resume</option>
+                      <option>Healthcare Nurse Resume</option>
+                      <option>Software Engineer Resume</option>
+                      <option>Financial Analyst Resume</option>
+                      <option>Graphic Designer Resume</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-futuristic mt-2">Find Matches</button>
+                  </form>
+                  <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+
+                {% elif project.demo_type == "player_peak" %}
+                  <form method="post" class="demo-form mt-3" data-demo="player_peak" data-project="{{ project.id }}">
+                    {% csrf_token %}
+                    <label for="player-{{ project.id }}">Choose a player:</label>
+                    <select name="player" id="player-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
+                      <option value="Dyson Daniels">Dyson Daniels</option>
+                      <option value="Jalen Williams">Jalen Williams</option>
+                      <option value="Walker Kessler">Walker Kessler</option>
+                      <option value="Paolo Banchero">Paolo Banchero</option>
+                      <option value="Shaedon Sharpe">Shaedon Sharpe</option>
+                      <option value="Jalen Duran">Jalen Duran</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-futuristic mt-2">Show Peak Stats</button>
+                  </form>
+                  <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+
+                {% elif project.demo_type == "basketball_archetype" %}
+                  <form method="post" class="demo-form mt-3" data-demo="basketball_archetype" data-project="{{ project.id }}">
+                    {% csrf_token %}
+                    <label for="player-{{ project.id }}">Choose a player:</label>
+                    <select name="player" id="player-{{ project.id }}" class="form-select w-auto d-inline-block mx-2">
                       <option>LeBron James</option>
                       <option>Klay Thompson</option>
                       <option>Steven Adams</option>
@@ -170,31 +241,33 @@ document.addEventListener("DOMContentLoaded", function() {
                       <option>Jordan Clarkson</option>
                       <option>Anthony Davis</option>
                       <option>Jalen Johnson</option>
-                  </select>
-                  <button type="submit" class="btn btn-sm btn-futuristic mt-2">Identify Archetype</button>
-                </form>
-                <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
-              {% endif %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-futuristic mt-2">Identify Archetype</button>
+                  </form>
+                  <div class="demo-results mt-3" id="results-{{ project.id }}"></div>
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Screenshot Modal -->
-      <div class="modal fade" id="screenshotModal-{{ project.id }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-          <div class="modal-content bg-dark">
-            <div class="modal-body d-flex justify-content-center align-items-center p-0">
-              <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
-                   class="img-fluid"
-                   alt="Screenshot of {{ project.title }}">
+        <!-- Screenshot Modal -->
+        <div class="modal fade" id="screenshotModal-{{ project.id }}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-dark">
+              <div class="modal-body d-flex justify-content-center align-items-center p-0">
+                <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
+                     class="img-fluid"
+                     alt="Screenshot of {{ project.title }}">
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      {% endif %}
     {% endfor %}
   </div>
 </section>
+
 
 <!-- Featured GitHub Project -->
 {% if featured %}
@@ -226,10 +299,13 @@ document.addEventListener("DOMContentLoaded", function() {
               <a href="{{ featured.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
             {% endif %}
             <button class="btn btn-sm btn-futuristic" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#project-{{ featured.id }}">
+                      data-bs-toggle="collapse" data-bs-target="#project-{{ featured.id }}">
               Details
             </button>
           </div>
+
+
+
 
           <!-- Collapsible Details -->
           <div class="collapse mt-2" id="project-{{ featured.id }}">

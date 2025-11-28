@@ -118,3 +118,60 @@ def demo_api(request):
         return JsonResponse({"html": response_html})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+from django.shortcuts import render
+from django.conf import settings
+from django.contrib.staticfiles.storage import staticfiles_storage
+from PIL import Image
+from io import BytesIO
+import base64
+from projects.ml.dog_breed_model import predict_pil_image
+
+
+def dog_breed_demo(request):
+    project = {"title": "Dog Breed Classifier"}
+    context = {
+        "project": project,
+        "prediction": None,
+        "error": None,
+        "preview_data_url": None,
+        "sample_images": [
+            {"filename": "border_collie.jpg", "label": "Border Collie"},
+            {"filename": "golden_retriever.jpg", "label": "Golden Retriever"},
+            {"filename": "french_bulldog.jpg", "label": "French Bulldog"},
+            {"filename": "rottweiler.jpg", "label": "Rottweiler"},
+            {"filename": "kelpie.jpg", "label": "Kelpie"}
+        ],
+    }
+
+    if request.method == "POST":
+        try:
+            if "dog_photo" in request.FILES:
+                file = request.FILES["dog_photo"]
+                img = Image.open(file)
+
+            elif "sample_image" in request.POST:
+                filename = request.POST["sample_image"]
+                sample_path = staticfiles_storage.path(f"projects/dog_samples/{filename}")
+                img = Image.open(sample_path)
+
+            else:
+                context["error"] = "Please upload or select an image."
+                return render(request, "projects/dog_breed_demo.html", context)
+
+            # Build preview
+            buf = BytesIO()
+            img.convert("RGB").save(buf, format="JPEG")
+            buf.seek(0)
+            context["preview_data_url"] = (
+                "data:image/jpeg;base64,"
+                + base64.b64encode(buf.read()).decode("utf-8")
+            )
+
+            # Run prediction
+            context["prediction"] = predict_pil_image(img, topk=3)
+
+        except Exception as e:
+            context["error"] = f"Failed to process image: {e}"
+
+    return render(request, "projects/dog_breed_demo.html", context)

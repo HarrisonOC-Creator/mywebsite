@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dog Breed Demo | {{ project.title }}{% endblock %}
+
+{% block content %}
+<section class="container d-flex flex-column align-items-center text-center py-5">
+  <!-- Keep title styling as is -->
+  <h1 class="card-title mb-3">{{ project.title }}</h1>
+
+  <!-- Instructional text in white -->
+  <p class="text-white mb-4">
+    Upload a photo of your dog or try a sample image to identify the breed.
+  </p>
+
+  <!-- Upload form -->
+    <form method="post" enctype="multipart/form-data" class="mb-4 w-100" style="max-width: 400px;" id="uploadForm">
+      {% csrf_token %}
+      <label for="dog_photo" class="demo-heading">Choose a photo:</label>
+      <input type="file" name="dog_photo" id="dog_photo" accept="image/*"
+             class="form-control mb-3 custom-file-input">
+    </form>
+    
+    <!-- Sample images -->
+    <h5 class="demo-heading">Or try with a sample image:</h5>
+    <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+      {% for sample in sample_images %}
+        <form method="post" class="text-center sample-form">
+          {% csrf_token %}
+          <input type="hidden" name="sample_image" value="{{ sample.filename }}">
+          <button type="submit" class="btn btn-brand-outline p-2">
+            <img src="{% static 'projects/dog_samples/' %}{{ sample.filename }}"
+                 alt="Sample image"
+                 class="img-thumbnail mb-2 sample-thumb brand-thumbnail">
+          </button>
+        </form>
+      {% endfor %}
+    </div>
+
+    <script>
+      // Auto-submit upload form when a file is chosen
+      document.getElementById('dog_photo').addEventListener('change', function() {
+        if (this.files.length > 0) {
+          document.getElementById('uploadForm').submit();
+        }
+      });
+    
+      // Auto-submit sample forms when clicked
+      document.querySelectorAll('.sample-form button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault(); // prevent default button behavior
+          this.closest('form').submit(); // submit the form directly
+        });
+      });
+    </script>
+
+
+  
+  <!-- Preview -->
+  {% if preview_data_url %}
+    <h5 class="card-title mb-3">Results</h5>
+    <img src="{{ preview_data_url }}" class="img-thumbnail mb-4 preview-thumb brand-thumbnail" alt="Uploaded dog photo">
+  {% endif %}
+  
+  <!-- Prediction -->
+    {% if prediction %}
+      <p class="prediction-text mb-3">
+        <span class="prediction-label">Predicted breed:</span>
+        <span class="prediction-result">{{ prediction.best_breed }}</span>
+        <span class="prediction-prob">({{ prediction.best_prob|floatformat:2 }}%)</span>
+      </p>
+    
+      <h6 class="prediction-label mb-3">Top matches:</h6>
+      <ul class="list-unstyled">
+        {% for item in prediction.topk %}
+          <li class="prediction-text">
+            <span class="prediction-result">{{ item.breed }}</span>
+            — <span class="prediction-prob">{{ item.prob|floatformat:2 }}%</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+</section>
+{% endblock %}

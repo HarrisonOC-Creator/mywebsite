@@ -13,6 +13,12 @@ class Project(models.Model):
     image = models.ImageField(upload_to="projects/", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     icon = models.ImageField(upload_to="projects/icons/", blank=True, null=True)
+    project_type = models.CharField(
+        max_length=20,
+        choices=[("static", "Static"), ("interactive", "Interactive")],
+        default="static"
+    )
+
 
     def save(self, *args, **kwargs):
         if not self.slug:

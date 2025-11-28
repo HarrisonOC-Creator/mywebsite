@@ -108,6 +108,133 @@
   color: var(--futuristic-accent);
   text-shadow: 0 0 8px var(--futuristic-accent);
 }
+.sample-thumb {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+.preview-thumb {
+  width: 300px;       /* or whatever size you prefer */
+  height: 300px;
+  object-fit: cover;  /* crops nicely without distortion */
+}
+/* Instructional text styling */
+.demo-instructions {
+  font-family: 'Rajdhani', sans-serif;   /* matches your site body font */
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--ocean-accent);            /* ocean blue accent */
+  text-shadow: 0 0 6px rgba(0, 188, 212, 0.4);
+  margin-bottom: 1rem;
+}
+
+/* Labels under sample images */
+.sample-label {
+  font-family: 'Orbitron', sans-serif;   /* matches your titles */
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--futuristic-accent);       /* yellow accent */
+  text-shadow: 0 0 6px rgba(255, 224, 102, 0.5);
+}
+
+/* File input bar styling */
+.custom-file-input {
+  background-color: var(--ocean-accent);   /* blue bar */
+  border: 2px solid var(--futuristic-accent); /* yellow border */
+  color: #fff;                             /* white filename text */
+  padding: 0.4rem;
+}
+
+/* "Choose File" button styling */
+.custom-file-input::file-selector-button {
+  background-color: #f0f0f0;   /* light grey default */
+  color: #000;                 /* black text */
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect: switch to yellow */
+.custom-file-input::file-selector-button:hover,
+.custom-file-input::file-selector-button:focus {
+  background-color: var(--futuristic-accent); /* yellow on hover */
+  color: var(--futuristic-bg);                /* dark text */
+  border-color: var(--futuristic-accent);
+  box-shadow: 0 0 8px var(--futuristic-accent);
+}
+
+/* File input bar styling */
+.custom-file-input {
+  background-color: var(--ocean-accent);      /* blue bar */
+  border: 2px solid var(--futuristic-accent); /* yellow border */
+  color: #fff;                                /* white filename text */
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 0.4rem;
+}
+
+/* Safari / older WebKit fallback */
+.custom-file-input::-webkit-file-upload-button {
+  background-color: #f0f0f0;   /* light grey default */
+  color: #000;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 4px;
+}
+.custom-file-input::-webkit-file-upload-button:hover {
+  background-color: var(--futuristic-accent); /* yellow on hover */
+  color: var(--futuristic-bg);
+  border-color: var(--futuristic-accent);
+  box-shadow: 0 0 8px var(--futuristic-accent);
+}
+.sample-label {
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.sample-label:hover {
+  color: #ffffff; /* stays white but glows */
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+.demo-heading {
+  font-family: 'Rajdhani', sans-serif;  /* consistent with site */
+  font-size: 1.1rem;                     /* same size for both */
+  font-weight: 600;
+  color: #fff;                           /* white text */
+  margin-bottom: 1rem;
+}
+
+/* Mobile spacing tweak */
+@media (max-width: 576px) {
+  .demo-heading {
+    font-size: 1rem;       /* slightly smaller on very small screens */
+    margin-bottom: 0.75rem;
+  }
+}
+
+.prediction-text {
+  font-size: 1.2rem;          /* large, consistent size */
+  font-family: 'Rajdhani', sans-serif;
+  margin-bottom: 0.5rem;
+}
+
+.prediction-label {
+  color: var(--ocean-accent); /* blue accent for labels */
+  font-weight: 600;
+}
+
+.prediction-result {
+  color: #ffffff;             /* clear white for breed names */
+  font-weight: 700;
+}
+
+.prediction-prob {
+  color: #cccccc;             /* muted grey for probabilities */
+  font-weight: 500;
+}
 
 /* About Section */
 .about-photo {
@@ -138,6 +265,16 @@
 }
 .hover-zoom:hover {
   transform: scale(1.05);
+}
+.text-interactive {
+  color: #007BFF; /* blue */
+}
+
+.text-static {
+  color: #FFC107; /* yellow */
+}
+.text-demo-title {
+  color: #FFC107; /* yellow */
 }
 
 /* Tagline styled like project titles */
@@ -306,14 +443,28 @@
 }
 
 
-/* Section Styling */
 section {
   background-color: var(--futuristic-bg);
   color: var(--futuristic-text);
   padding: 3rem 0;
 }
+
 section h2 {
   font-family: 'Orbitron', sans-serif;
   color: var(--futuristic-accent);
   margin-bottom: 2rem;
+}
+
+#interactive-projects h2.text-interactive {
+  color: var(--futuristic-accent) !important; /*  */
+  text-shadow: 0 0 8px rgba(0, 188, 212, 0.7); /* subtle glow */
+}
+
+#static-projects h2.text-static {
+  color: var(--futuristic-accent) !important;
+  text-shadow: 0 0 8px rgba(0, 188, 212, 0.7)
+}
+#text-demo-title h2.text-demo-title {
+  color: var(--futuristic-accent) !important;
+  text-shadow: 0 0 8px rgba(0, 188, 212, 0.7)
 }

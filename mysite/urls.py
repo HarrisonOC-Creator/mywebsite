@@ -27,6 +27,8 @@ urlpatterns = [
     path("projects/<slug:slug>/", views.project_detail, name="project_detail"),
     path("contact/", views.contact, name="contact"),
     path("demo/api/", views.demo_api, name="demo_api"),  # AJAX endpoint
+    path("dog-breed-demo/", views.dog_breed_demo, name="dog_breed_demo"),
+
 ]
 
 if settings.DEBUG:
