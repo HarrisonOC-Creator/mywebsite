@@ -13,13 +13,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # -----------------------------------------------------------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "insecure-development-key")
 
-# Default to DEBUG=True locally, False on Render
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+# Default to DEBUG=False unless explicitly set
+DEBUG = os.environ.get("DEBUG", "False") == "True"
+
 
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "harrisonogdencarr.pythonanywhere.com",
 ]
+
 # Render injects its hostname into env
 render_host = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if render_host:
@@ -116,9 +119,9 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Include both the top-level static/ folder and any app-level static/ folders
 STATICFILES_DIRS = [
-    BASE_DIR / "static",                # e.g. static/projects/screenshots/
-    BASE_DIR / "projects" / "static",   # keep app-specific static if you have them
+    BASE_DIR / "projects" / "static",
 ]
+
 
 if DEBUG:
     # Simple storage in dev (no hashed filenames)

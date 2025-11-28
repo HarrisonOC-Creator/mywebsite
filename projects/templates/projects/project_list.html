@@ -11,8 +11,8 @@
     <div class="col-md-6 text-center mb-4 mb-md-0">
       <h2 class="mb-4">About Me</h2>
 
-      <img src="{% static 'projects/me/me.jpeg' %}" 
-           alt="Photo of Harrison Ogden-Carr" 
+      <img src="{% static 'projects/me/me.jpeg' %}"
+           alt="Photo of Harrison Ogden-Carr"
            class="img-fluid rounded-circle shadow-sm about-photo mb-3">
 
       <h5 class="card-title hero-tagline mb-3">
@@ -21,14 +21,14 @@
 
       <div class="about-text px-3">
         <p class="hero-subtext">
-          I’m an aspiring ML engineer, building skills by tackling projects that span different algorithms 
-          and real‑world challenges. This website is part of that journey — a place to share my work and 
+          I’m an aspiring ML engineer, building skills by tackling projects that span different algorithms
+          and real‑world challenges. This website is part of that journey — a place to share my work and
           showcase the progress that I make along the way.
         </p>
       </div>
 
       <div class="mt-3">
-        <a href="{% static 'documents/Harrison_Ogden_Carr_CV.pdf' %}" 
+        <a href="{% static 'documents/Harrison_Ogden_Carr_CV.pdf' %}"
            class="btn btn-futuristic" target="_blank">
           <i class="bi bi-file-earmark-person"></i> View CV
         </a>
@@ -38,15 +38,14 @@
     <!-- Right Column: ML Roadmap -->
     <div class="col-md-6 text-center mt-4 mt-md-0">
       <h2 class="mb-4">My ML Roadmap</h2>
-      <img src="{% static 'projects/roadmap/roadmap.jpg' %}" 
-           alt="Roadmap of Harrison's learning journey" 
+      <img src="{% static 'projects/roadmap/roadmap.jpg' %}"
+           alt="Roadmap of Harrison's learning journey"
            class="img-fluid rounded shadow-sm roadmap-img hover-zoom"
            data-bs-toggle="modal" data-bs-target="#roadmapModal"
            style="cursor: zoom-in;">
-    </div> <!-- ✅ closed right column -->
+    </div>
   </div>
 </section>
-
 
 <!-- Roadmap Modal -->
 <div class="modal fade" id="roadmapModal" tabindex="-1" aria-hidden="true"
@@ -54,7 +53,7 @@
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content bg-transparent border-0 shadow-none">
       <div class="modal-body d-flex justify-content-center align-items-center p-0">
-        <img src="{% static 'projects/roadmap/roadmap.jpg' %}" 
+        <img src="{% static 'projects/roadmap/roadmap.jpg' %}"
              alt="Expanded roadmap"
              class="img-fluid rounded shadow-lg"
              data-bs-dismiss="modal"
@@ -76,6 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+
 <!-- Interactive Projects -->
 <section id="interactive-projects" class="container mt-5">
   <h2 class="text-center mb-4 text-interactive">Live Demos</h2>
@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function() {
                   {{ project.title }}
                 </h5>
               </div>
-
               <!-- Action Buttons -->
               <div class="d-flex justify-content-between mb-2">
                 {% if project.github_link %}
@@ -108,7 +107,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 <a href="{% url 'dog_breed_demo' %}" class="btn btn-sm btn-futuristic">
                   Find Your Dog Breed Here!
                 </a>
-
                 <button class="btn btn-sm btn-futuristic" type="button"
                         data-bs-toggle="collapse" data-bs-target="#project-{{ project.id }}">
                   Details
@@ -121,11 +119,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 {% if project.tech_stack %}
                   <p class="small mt-2"><strong>Tech stack:</strong> {{ project.tech_stack }}</p>
                 {% endif %}
-                <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
-                     class="project-screenshot img-thumbnail hover-zoom"
-                     alt="Screenshot of {{ project.title }}"
-                     data-bs-toggle="modal"
-                     data-bs-target="#screenshotModal-{{ project.id }}">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}"
+                       class="project-screenshot img-thumbnail hover-zoom"
+                       alt="Screenshot of {{ project.title }}"
+                       data-bs-toggle="modal"
+                       data-bs-target="#screenshotModal-{{ project.id }}">
+                {% endif %}
               </div>
             </div>
           </div>
@@ -136,9 +136,11 @@ document.addEventListener("DOMContentLoaded", function() {
           <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content bg-dark">
               <div class="modal-body d-flex justify-content-center align-items-center p-0">
-                <img src="{% static 'projects/screenshots/' %}{{ project.slug }}.png"
-                     class="img-fluid"
-                     alt="Screenshot of {{ project.title }}">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}"
+                       class="img-fluid"
+                       alt="Screenshot of {{ project.title }}">
+                {% endif %}
               </div>
             </div>
           </div>
@@ -147,8 +149,6 @@ document.addEventListener("DOMContentLoaded", function() {
     {% endfor %}
   </div>
 </section>
-
-
 <!-- Static Projects -->
 <section id="static-projects" class="container mt-5">
   <h2 class="text-center mb-4 text-static">Project Snapshots</h2>
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
                      data-bs-toggle="modal"
                      data-bs-target="#screenshotModal-{{ project.id }}">
 
-                {# 🔹 Inline demo forms restored for static projects #}
+                {# Inline demo forms for static projects #}
                 {% if project.demo_type == "resume" %}
                   <form method="post" class="demo-form mt-3" data-demo="resume" data-project="{{ project.id }}">
                     {% csrf_token %}
@@ -267,8 +267,6 @@ document.addEventListener("DOMContentLoaded", function() {
     {% endfor %}
   </div>
 </section>
-
-
 <!-- Featured GitHub Project -->
 {% if featured %}
 <section class="container mt-5">
@@ -299,13 +297,10 @@ document.addEventListener("DOMContentLoaded", function() {
               <a href="{{ featured.github_link }}" class="btn btn-sm btn-primary" target="_blank">GitHub</a>
             {% endif %}
             <button class="btn btn-sm btn-futuristic" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#project-{{ featured.id }}">
+                    data-bs-toggle="collapse" data-bs-target="#project-{{ featured.id }}">
               Details
             </button>
           </div>
-
-
-
 
           <!-- Collapsible Details -->
           <div class="collapse mt-2" id="project-{{ featured.id }}">
@@ -326,6 +321,7 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
   </div>
 </section>
+{% endif %}
 
 <!-- Featured GitHub Modal -->
 <div class="modal fade" id="screenshotModal-featured" tabindex="-1" aria-hidden="true">
@@ -339,7 +335,6 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
   </div>
 </div>
-{% endif %}
 
 <!-- Scripts -->
 <script>
