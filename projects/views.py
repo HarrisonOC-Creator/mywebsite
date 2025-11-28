@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import Project
+from projects.ml.dog_breed_model import predict_pil_image
 
 
 def project_list(request):
@@ -121,57 +122,57 @@ def demo_api(request):
 
 from django.shortcuts import render
 from django.conf import settings
-from django.contrib.staticfiles.storage import staticfiles_storage
+from pathlib import Path
 from PIL import Image
-from io import BytesIO
-import base64
+import io, base64
+from .models import Project
 from projects.ml.dog_breed_model import predict_pil_image
 
-
 def dog_breed_demo(request):
-    project = {"title": "Dog Breed Classifier"}
-    context = {
-        "project": project,
-        "prediction": None,
-        "error": None,
-        "preview_data_url": None,
-        "sample_images": [
-            {"filename": "border_collie.jpg", "label": "Border Collie"},
-            {"filename": "golden_retriever.jpg", "label": "Golden Retriever"},
-            {"filename": "french_bulldog.jpg", "label": "French Bulldog"},
-            {"filename": "rottweiler.jpg", "label": "Rottweiler"},
-            {"filename": "kelpie.jpg", "label": "Kelpie"}
-        ],
-    }
+    prediction = None
+    preview_data_url = None
 
     if request.method == "POST":
-        try:
-            if "dog_photo" in request.FILES:
-                file = request.FILES["dog_photo"]
-                img = Image.open(file)
+        # Case 1: uploaded file
+        if "dog_photo" in request.FILES:
+            uploaded_file = request.FILES["dog_photo"]
+            img = Image.open(uploaded_file).convert("RGB")
 
-            elif "sample_image" in request.POST:
-                filename = request.POST["sample_image"]
-                sample_path = staticfiles_storage.path(f"projects/dog_samples/{filename}")
-                img = Image.open(sample_path)
+            # preview
+            buf = io.BytesIO()
+            img.save(buf, format="PNG")
+            preview_data_url = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
 
-            else:
-                context["error"] = "Please upload or select an image."
-                return render(request, "projects/dog_breed_demo.html", context)
+            # run model
+            prediction = predict_pil_image(img, topk=3)
 
-            # Build preview
-            buf = BytesIO()
-            img.convert("RGB").save(buf, format="JPEG")
-            buf.seek(0)
-            context["preview_data_url"] = (
-                "data:image/jpeg;base64,"
-                + base64.b64encode(buf.read()).decode("utf-8")
-            )
+        # Case 2: sample image
+        elif "sample_image" in request.POST:
+            filename = request.POST["sample_image"]
+            img_path = Path(settings.BASE_DIR) / "projects/ml/dog_samples" / filename
+            img = Image.open(img_path).convert("RGB")
 
-            # Run prediction
-            context["prediction"] = predict_pil_image(img, topk=3)
+            # preview
+            buf = io.BytesIO()
+            img.save(buf, format="PNG")
+            preview_data_url = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
 
-        except Exception as e:
-            context["error"] = f"Failed to process image: {e}"
+            # run model
+            prediction = predict_pil_image(img, topk=3)
 
-    return render(request, "projects/dog_breed_demo.html", context)
+    # sample images list for template
+    sample_images = [
+        {"filename": "border_collie.jpg"},
+        {"filename": "golden_retriever.jpg"},
+        {"filename": "french_bulldog.jpg"},
+        {"filename": "rottweiler.jpg"},
+        {"filename": "kelpie.jpg"},
+    ]
+
+    return render(request, "projects/dog_breed_demo.html", {
+        "project": Project.objects.get(slug="dog-breed-classifier"),
+        "sample_images": sample_images,
+        "preview_data_url": preview_data_url,
+        "prediction": prediction,
+    })
+
